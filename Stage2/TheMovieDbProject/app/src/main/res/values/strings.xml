@@ -2,4 +2,5 @@
     <string name="app_name">TheMovieDbProject</string>
     <string name="popular_sort">Sort by Popular</string>
     <string name="toprated_sort">Sort by Top Rated</string>
+    <string name="show_favroites">Show favorites</string>
 </resources>

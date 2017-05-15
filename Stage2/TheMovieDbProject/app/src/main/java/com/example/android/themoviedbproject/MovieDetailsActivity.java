@@ -87,6 +87,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     cv.put(FavoriteMovie.RATING, movie.getUserRating());
                     cv.put(FavoriteMovie.RELEASE_DATE, movie.getReleaseDate());
                     cv.put(FavoriteMovie.TITLE, movie.getTitle());
+                    cv.put(FavoriteMovie.IMAGE_URL, movie.getImageUrl());
                     MovieDetailsActivity.this.getContentResolver().insert(
                             MovieProvider.FavoriteMovies.withId(movie.getId()), cv
                     );

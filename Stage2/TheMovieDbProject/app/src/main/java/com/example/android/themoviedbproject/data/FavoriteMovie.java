@@ -22,5 +22,6 @@ public interface FavoriteMovie {
     public static final String RELEASE_DATE = "release_date";
     @DataType(DataType.Type.TEXT) @NotNull
     public static final String PLOT = "plot";
-
+    @DataType(DataType.Type.TEXT) @NotNull
+    public static final String IMAGE_URL = "image_url";
 }
