@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gaurdians of the Galaxy"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!--Moview poster-->
+                <ImageView
+                    android:id="@+id/movie_poster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <!--Release date-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Release date: "
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/release_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Release date: " />
+
+                    </LinearLayout>
+
+                    <!--User Ratings-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="User rating: "
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/user_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <!--Mark as Favorite-->
+                    <Button android:id="@+id/favorite_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mark as\nFavorite"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:background="@android:color/holo_blue_light"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Plot Synopsis -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Plot synopsis: "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/plot_synopsis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!-- Trailers -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Trailers: "
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/trailers_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="No trailers" />
+            </LinearLayout>
+
+            <!--Reviews-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Reviews: "
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/reviews_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="No reviews" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
