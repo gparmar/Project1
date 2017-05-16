@@ -35,6 +35,6 @@ public class MoviewDetailsActivity extends AppCompatActivity {
         mPlotTV.setText(movie.getPlotSynopsis());
         mUserRatingTV.setText(movie.getUserRating());
         Picasso.with(this).load(Constants.IMAGE_BASE_URL+
-                Constants.BIG_IMAGE_SIZE+movie.getImageUrl()).into(mMoviePosterIV);
+                Constants.IMAGE_SIZE+movie.getImageUrl()).into(mMoviePosterIV);
     }
 }

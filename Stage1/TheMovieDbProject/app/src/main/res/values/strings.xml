@@ -2,4 +2,10 @@
     <string name="app_name">TheMovieDbProject</string>
     <string name="popular_sort">Sort by Popular</string>
     <string name="toprated_sort">Sort by Top Rated</string>
+    <string name="release_date">Release date:</string>
+    <string name="user_rating">User rating:</string>
+    <string name="plot_synopsis">Plot synopsis:</string>
+    <string name="by_ten">/10</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="popular_movies">Popular Movies</string>
 </resources>

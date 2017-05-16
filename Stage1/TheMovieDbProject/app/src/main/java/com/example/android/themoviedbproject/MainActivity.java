@@ -72,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "Error while getting popular movies", e);
         }
         CommonUtils.putSharedPref(this, Constants.PROPERTY_SORTED_ON, mSortedByPopular);
+        if (mSortedByPopular) {
+            setTitle(getString(R.string.popular_movies));
+        } else {
+            setTitle(getString(R.string.top_rated_movies));
+        }
     }
 
     public class GetMovies extends AsyncTask<URL, Void, List<Movie>> {
@@ -143,9 +148,11 @@ public class MainActivity extends AppCompatActivity {
         if (mSortedByPopular) {
             popularMenuItem.setVisible(false);
             topratedMenuItem.setVisible(true);
+            setTitle(getString(R.string.popular_movies));
         } else {
             topratedMenuItem.setVisible(false);
             popularMenuItem.setVisible(true);
+            setTitle(getString(R.string.top_rated_movies));
         }
     }
 }

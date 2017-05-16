@@ -66,7 +66,7 @@ public class PostersGridAdapter extends RecyclerView.Adapter<PostersGridAdapter.
 
         public PosterItemViewHolder(View itemView) {
             super(itemView);
-            posterIV = (ImageView) itemView.findViewById(R.id.iv_poster);
+            posterIV = (ImageView) itemView;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
