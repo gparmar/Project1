@@ -1,0 +1,1 @@
+You will need to replace the THEMOVIEDB_API_KEY value in the app/build.gradle with your api-key. Then the project will run and display the movie posters.
