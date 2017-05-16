@@ -12,7 +12,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "THEMOVIEDB_API_KEY", "\"xxxxxxxxx\""
+        }
         release {
+            buildConfigField "String", "THEMOVIEDB_API_KEY", "\"xxxxxxxxx\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
