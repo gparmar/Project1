@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.android.themoviedbproject.common.CommonUtils;
-import com.example.android.themoviedbproject.common.ConstantValues;
+import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.common.MovieUtil;
 import com.example.android.themoviedbproject.data.FavoriteMovie;
 import com.example.android.themoviedbproject.data.MovieProvider;
@@ -100,9 +100,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String videosUrlString = ConstantValues.MOVIE_VIDEOS_URL;
+            String videosUrlString = Constants.MOVIE_VIDEOS_URL;
             videosUrlString = videosUrlString.replace("###", strings[0]) +
-                    "?api_key="+ConstantValues.THEMOVIEDB_API_KEY;
+                    "?api_key="+ Constants.THEMOVIEDB_API_KEY;
             try {
                 InputStream in = new URL(videosUrlString).openStream();
                 String json = IOUtils.toString(in);
@@ -122,7 +122,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 for (final Video video: videos) {
                     View view = inflater.inflate(R.layout.trailers_item, mTrailersContainer, false);
                     ImageView iv = (ImageView) view.findViewById(R.id.trailer_thumbnail);
-                    Picasso.with(MovieDetailsActivity.this).load(ConstantValues.YOUTUBE_THUMBNAIL_URL.replace("###",video.getKey()))
+                    Picasso.with(MovieDetailsActivity.this).load(Constants.YOUTUBE_THUMBNAIL_URL.replace("###",video.getKey()))
                             .into(iv);
                     TextView name = (TextView) view.findViewById(R.id.trailer_name);
                     name.setText(video.getName());
@@ -152,9 +152,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String reviewsUrlString = ConstantValues.MOVIE_REVIEWS_URL;
+            String reviewsUrlString = Constants.MOVIE_REVIEWS_URL;
             reviewsUrlString = reviewsUrlString.replace("###", strings[0]) +
-                    "?api_key="+ConstantValues.THEMOVIEDB_API_KEY;
+                    "?api_key="+ Constants.THEMOVIEDB_API_KEY;
             try {
                 String json = IOUtils.toString(new URL(reviewsUrlString));
                 return json;

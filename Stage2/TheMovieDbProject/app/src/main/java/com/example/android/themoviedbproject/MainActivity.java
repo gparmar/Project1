@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.example.android.themoviedbproject.adapter.PostersGridAdapter;
 import com.example.android.themoviedbproject.common.CommonUtils;
-import com.example.android.themoviedbproject.common.ConstantValues;
+import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.common.MovieUtil;
 import com.example.android.themoviedbproject.data.FavoriteMovie;
 import com.example.android.themoviedbproject.data.MovieProvider;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSortedBy = Integer.parseInt(CommonUtils.getSharedPref(this, ConstantValues.PROPERTY_SORTED_ON, "0"));
+        mSortedBy = Integer.parseInt(CommonUtils.getSharedPref(this, Constants.PROPERTY_SORTED_ON, "0"));
 
         mMoviePostersRV = (RecyclerView) findViewById(R.id.rv_movie_posters);
         //LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
             setTitle("Popular Movies");
-            showMoviePosters(ConstantValues.POPULAR_MOVIES_URL);
+            showMoviePosters(Constants.POPULAR_MOVIES_URL);
         } else if (SORTED_BY_TOP_RATED_MOVIES == mSortedBy) {
             setTitle("Top Rated Movies");
-            showMoviePosters(ConstantValues.TOPRATED_MOVIES_URL);
+            showMoviePosters(Constants.TOPRATED_MOVIES_URL);
         } else if (SORTED_BY_FAV_MOVIES == mSortedBy) {
             setTitle("Favorite Movies");
             showFavoriteMovies();
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     private void showMoviePosters(String moviesUrl) {
         //Get the popular movies and display them as a grid
         Uri uri = Uri.parse(moviesUrl)
-                .buildUpon().appendQueryParameter("api_key", ConstantValues.THEMOVIEDB_API_KEY)
+                .buildUpon().appendQueryParameter("api_key", Constants.THEMOVIEDB_API_KEY)
                 .build();
         Log.d(TAG, "Will make http request " + uri.toString());
         try {
@@ -230,15 +230,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.sort_by_popular) {
             mSortedBy = SORTED_BY_POPULAR_MOVIES;
-            showMoviePosters(ConstantValues.POPULAR_MOVIES_URL);
+            showMoviePosters(Constants.POPULAR_MOVIES_URL);
         } else if (item.getItemId() == R.id.sort_by_toprated) {
             mSortedBy = SORTED_BY_TOP_RATED_MOVIES;
-            showMoviePosters(ConstantValues.TOPRATED_MOVIES_URL);
+            showMoviePosters(Constants.TOPRATED_MOVIES_URL);
         } else if (item.getItemId() == R.id.sort_by_favorites) {
             mSortedBy = SORTED_BY_FAV_MOVIES;
             showFavoriteMovies();
         }
-        CommonUtils.putSharedPref(this, ConstantValues.PROPERTY_SORTED_ON, mSortedBy);
+        CommonUtils.putSharedPref(this, Constants.PROPERTY_SORTED_ON, mSortedBy);
         return false;
     }
 
