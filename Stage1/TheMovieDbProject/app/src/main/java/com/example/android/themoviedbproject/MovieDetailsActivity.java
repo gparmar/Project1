@@ -9,7 +9,7 @@ import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.model.Movie;
 import com.squareup.picasso.Picasso;
 
-public class MoviewDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity {
     private TextView mTitleTV;
     private TextView mReleaseDateTV;
     private TextView mUserRatingTV;

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.android.themoviedbproject.MoviewDetailsActivity;
+import com.example.android.themoviedbproject.MovieDetailsActivity;
 import com.example.android.themoviedbproject.R;
 import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.model.Movie;
@@ -70,7 +70,7 @@ public class PostersGridAdapter extends RecyclerView.Adapter<PostersGridAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, MoviewDetailsActivity.class);
+                    Intent intent = new Intent(context, MovieDetailsActivity.class);
                     intent.putExtra("movie", movie);
                     context.startActivity(intent);
                 }
