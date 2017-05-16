@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import com.example.android.themoviedbproject.MovieDetailsActivity;
 import com.example.android.themoviedbproject.R;
 import com.example.android.themoviedbproject.common.CommonUtils;
-import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.model.Movie;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

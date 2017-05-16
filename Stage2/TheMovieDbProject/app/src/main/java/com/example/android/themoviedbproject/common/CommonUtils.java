@@ -57,10 +57,10 @@ public class CommonUtils {
             fileName = fileName.replace("/","");
         }
 
-        File direct = new File(Environment.getExternalStorageDirectory() + "/"+Constants.LOCAL_IMAGES_FOLDER);
+        File direct = new File(Environment.getExternalStorageDirectory() + "/"+ConstantValues.LOCAL_IMAGES_FOLDER);
 
         if (!direct.exists()) {
-            direct = new File("/sdcard/"+Constants.LOCAL_IMAGES_FOLDER);
+            direct = new File("/sdcard/"+ConstantValues.LOCAL_IMAGES_FOLDER);
             direct.mkdirs();
         }
 
@@ -81,10 +81,10 @@ public class CommonUtils {
         if (fileName != null && fileName.startsWith("/")) {
             fileName = fileName.replace("/","");
         }
-        File direct = new File(Environment.getExternalStorageDirectory() + "/"+Constants.LOCAL_IMAGES_FOLDER);
+        File direct = new File(Environment.getExternalStorageDirectory() + "/"+ConstantValues.LOCAL_IMAGES_FOLDER);
 
         if (!direct.exists()) {
-            direct = new File("/sdcard/"+Constants.LOCAL_IMAGES_FOLDER);
+            direct = new File("/sdcard/"+ConstantValues.LOCAL_IMAGES_FOLDER);
             direct.mkdirs();
         }
 
@@ -112,8 +112,8 @@ public class CommonUtils {
             Bitmap bmp = null;
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 try {
-                    bmp = Picasso.with(context).load(Constants.IMAGE_BASE_URL+
-                            Constants.IMAGE_SIZE+imageUrl).get();
+                    bmp = Picasso.with(context).load(ConstantValues.IMAGE_BASE_URL+
+                            ConstantValues.IMAGE_SIZE+imageUrl).get();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

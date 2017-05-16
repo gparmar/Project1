@@ -7,30 +7,26 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.android.themoviedbproject.adapter.PostersGridAdapter;
 import com.example.android.themoviedbproject.common.CommonUtils;
-import com.example.android.themoviedbproject.common.Constants;
+import com.example.android.themoviedbproject.common.ConstantValues;
 import com.example.android.themoviedbproject.common.MovieUtil;
-import com.example.android.themoviedbproject.common.NetworkUtil;
 import com.example.android.themoviedbproject.data.FavoriteMovie;
 import com.example.android.themoviedbproject.data.MovieProvider;
 import com.example.android.themoviedbproject.model.Movie;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.IOUtils;
 
@@ -39,8 +35,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -56,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSortedBy = Integer.parseInt(CommonUtils.getSharedPref(this, Constants.PROPERTY_SORTED_ON, "0"));
+        mSortedBy = Integer.parseInt(CommonUtils.getSharedPref(this, ConstantValues.PROPERTY_SORTED_ON, "0"));
 
         mMoviePostersRV = (RecyclerView) findViewById(R.id.rv_movie_posters);
         //LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -66,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
             setTitle("Popular Movies");
-            showMoviePosters(Constants.POPULAR_MOVIES_URL);
+            showMoviePosters(ConstantValues.POPULAR_MOVIES_URL);
         } else if (SORTED_BY_TOP_RATED_MOVIES == mSortedBy) {
             setTitle("Top Rated Movies");
-            showMoviePosters(Constants.TOPRATED_MOVIES_URL);
+            showMoviePosters(ConstantValues.TOPRATED_MOVIES_URL);
         } else if (SORTED_BY_FAV_MOVIES == mSortedBy) {
             setTitle("Favorite Movies");
             showFavoriteMovies();
@@ -134,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     private void showMoviePosters(String moviesUrl) {
         //Get the popular movies and display them as a grid
         Uri uri = Uri.parse(moviesUrl)
-                .buildUpon().appendQueryParameter("api_key", Constants.THEMOVIEDB_API_KEY)
+                .buildUpon().appendQueryParameter("api_key", ConstantValues.THEMOVIEDB_API_KEY)
                 .build();
         Log.d(TAG, "Will make http request " + uri.toString());
         try {
@@ -236,15 +230,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.sort_by_popular) {
             mSortedBy = SORTED_BY_POPULAR_MOVIES;
-            showMoviePosters(Constants.POPULAR_MOVIES_URL);
+            showMoviePosters(ConstantValues.POPULAR_MOVIES_URL);
         } else if (item.getItemId() == R.id.sort_by_toprated) {
             mSortedBy = SORTED_BY_TOP_RATED_MOVIES;
-            showMoviePosters(Constants.TOPRATED_MOVIES_URL);
+            showMoviePosters(ConstantValues.TOPRATED_MOVIES_URL);
         } else if (item.getItemId() == R.id.sort_by_favorites) {
             mSortedBy = SORTED_BY_FAV_MOVIES;
             showFavoriteMovies();
         }
-        CommonUtils.putSharedPref(this, Constants.PROPERTY_SORTED_ON, mSortedBy);
+        CommonUtils.putSharedPref(this, ConstantValues.PROPERTY_SORTED_ON, mSortedBy);
         return false;
     }
 
