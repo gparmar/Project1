@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.android.themoviedbproject.common.CommonUtils;
 import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.common.MovieUtil;
 import com.example.android.themoviedbproject.data.FavoriteMovie;
@@ -63,8 +64,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mReleaseDateTV.setText(movie.getReleaseDate());
         mPlotTV.setText(movie.getPlotSynopsis());
         mUserRatingTV.setText(movie.getUserRating());
-        Picasso.with(this).load(Constants.IMAGE_BASE_URL+
-                Constants.IMAGE_SIZE+movie.getImageUrl()).into(mMoviePosterIV);
+        CommonUtils.loadImageIntoImageView(this, movie.getImageUrl(), mMoviePosterIV);
 
         //Get the movie trailers and display them
         new GetVideoDetailsTask().execute(movie.getId());

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.example.android.themoviedbproject.MovieDetailsActivity;
 import com.example.android.themoviedbproject.R;
+import com.example.android.themoviedbproject.common.CommonUtils;
 import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -79,9 +80,7 @@ public class PostersGridAdapter extends RecyclerView.Adapter<PostersGridAdapter.
 
         public void bindImage(String imageUrl, Movie movie) {
             this.movie = movie;
-            String fullImageUrl = Constants.IMAGE_BASE_URL+Constants.IMAGE_SIZE+imageUrl;
-            Log.d("PosterItemViewHolder","Rendering image url:"+fullImageUrl);
-            Picasso.with(context).load(fullImageUrl).into(posterIV);
+            CommonUtils.loadImageIntoImageView(context, imageUrl, posterIV);
         }
     }
 }

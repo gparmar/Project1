@@ -12,8 +12,8 @@ public interface Constants {
     String MOVIE_REVIEWS_URL = "http://api.themoviedb.org/3/movie/###/reviews";
     String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     String IMAGE_SIZE = "w342";
-    String BIG_IMAGE_SIZE = "w500";
     String YOUTUBE_THUMBNAIL_URL = "https://i.ytimg.com/vi/###/hqdefault.jpg";
+    String LOCAL_IMAGES_FOLDER = "themoviedbpics";
 
     //Properties
     String PROPERTY_SORTED_ON = "PROPERTY_SORTED_ON";
