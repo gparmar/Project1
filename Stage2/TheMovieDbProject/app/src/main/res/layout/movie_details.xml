@@ -50,14 +50,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Release date: "
+                            android:text="@string/release_date"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/release_date"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Release date: " />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -71,7 +70,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="User rating: "
+                            android:text="@string/user_rating"
                             android:textStyle="bold" />
 
                         <TextView
@@ -83,7 +82,7 @@
                     <Button android:id="@+id/favorite_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mark as\nFavorite"
+                        android:text="@string/mark_as_favorite"
                         android:textSize="12sp"
                         android:textColor="@android:color/white"
                         android:background="@android:color/holo_blue_light"
@@ -97,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Plot synopsis: "
+                android:text="@string/plot_synopsis"
                 android:textStyle="bold" />
 
             <TextView
@@ -110,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Trailers: "
+                android:text="@string/trailers"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -125,7 +124,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
-                    android:text="No trailers" />
+                    android:text="@string/no_trailers" />
             </LinearLayout>
 
             <!--Reviews-->
@@ -133,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Reviews: "
+                android:text="@string/reviews"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -148,7 +147,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
-                    android:text="No reviews" />
+                    android:text="@string/no_reviews" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

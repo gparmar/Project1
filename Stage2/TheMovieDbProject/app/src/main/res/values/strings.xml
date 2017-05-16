@@ -3,4 +3,12 @@
     <string name="popular_sort">Sort by Popular</string>
     <string name="toprated_sort">Sort by Top Rated</string>
     <string name="show_favroites">Show favorites</string>
+    <string name="release_date">Release date:</string>
+    <string name="user_rating">User rating:</string>
+    <string name="mark_as_favorite">Mark as Favorite</string>
+    <string name="plot_synopsis">Plot synopsis:</string>
+    <string name="trailers">Trailers:</string>
+    <string name="no_trailers">No trailers</string>
+    <string name="reviews">Reviews:</string>
+    <string name="no_reviews">No reviews</string>
 </resources>
