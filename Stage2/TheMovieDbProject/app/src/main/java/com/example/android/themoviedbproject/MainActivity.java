@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     private void showMoviePosters(String moviesUrl) {
         //Get the popular movies and display them as a grid
         Uri uri = Uri.parse(moviesUrl)
-                .buildUpon().appendQueryParameter("api_key", Constants.THEMOVIEDB_API_KEY)
+                .buildUpon().appendQueryParameter("api_key", BuildConfig.THEMOVIEDB_API_KEY)
                 .build();
         Log.d(TAG, "Will make http request " + uri.toString());
         try {

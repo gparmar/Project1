@@ -102,7 +102,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String videosUrlString = Constants.MOVIE_VIDEOS_URL;
             videosUrlString = videosUrlString.replace("###", strings[0]) +
-                    "?api_key="+ Constants.THEMOVIEDB_API_KEY;
+                    "?api_key="+ BuildConfig.THEMOVIEDB_API_KEY;
             try {
                 InputStream in = new URL(videosUrlString).openStream();
                 String json = IOUtils.toString(in);
@@ -154,7 +154,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String reviewsUrlString = Constants.MOVIE_REVIEWS_URL;
             reviewsUrlString = reviewsUrlString.replace("###", strings[0]) +
-                    "?api_key="+ Constants.THEMOVIEDB_API_KEY;
+                    "?api_key="+ BuildConfig.THEMOVIEDB_API_KEY;
             try {
                 String json = IOUtils.toString(new URL(reviewsUrlString));
                 return json;

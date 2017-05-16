@@ -5,7 +5,6 @@ package com.example.android.themoviedbproject.common;
  */
 
 public interface Constants {
-    String THEMOVIEDB_API_KEY = "xxxxxxxxxx";
     String POPULAR_MOVIES_URL = "http://api.themoviedb.org/3/movie/popular";
     String TOPRATED_MOVIES_URL = "http://api.themoviedb.org/3/movie/top_rated";
     String MOVIE_VIDEOS_URL = "http://api.themoviedb.org/3/movie/###/videos";
