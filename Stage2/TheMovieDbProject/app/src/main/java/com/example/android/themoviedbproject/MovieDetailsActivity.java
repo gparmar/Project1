@@ -43,6 +43,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private LinearLayout mTrailersContainer;
     private LinearLayout mReviewsContainer;
     private Button mFavoriteButton;
+    private Button mUnfavoriteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +60,25 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mTrailersContainer = (LinearLayout) findViewById(R.id.trailers_container);
         mReviewsContainer = (LinearLayout) findViewById(R.id.reviews_container);
         mFavoriteButton = (Button) findViewById(R.id.favorite_btn);
+        mUnfavoriteButton = (Button) findViewById(R.id.unfavorite_btn);
 
-        mTitleTV.setText(movie.getTitle());
         mReleaseDateTV.setText(movie.getReleaseDate());
         mPlotTV.setText(movie.getPlotSynopsis());
         mUserRatingTV.setText(movie.getUserRating());
         CommonUtils.loadImageIntoImageView(this, movie.getImageUrl(), mMoviePosterIV);
 
+        setTitle(getString(R.string.movie_detail));
+        //Set the title of the movie
+        mTitleTV.setText(movie.getTitle());
+
         //Get the movie trailers and display them
         new GetVideoDetailsTask().execute(movie.getId());
         //Get the movie reviews and display them
         new GetReviewDetailsTask().execute(movie.getId());
+        //Check if the movie is favorited. If so then hide the favorite button
+        //and unhide the unfavorite button and vice versa if otherwise.
+        new CheckFavoriteTask().execute(movie.getId());
+
 
         //Set on click listener to the favorite button
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +100,49 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     MovieDetailsActivity.this.getContentResolver().insert(
                             MovieProvider.FavoriteMovies.withId(movie.getId()), cv
                     );
+                    mFavoriteButton.setVisibility(View.GONE);
+                    mUnfavoriteButton.setVisibility(View.VISIBLE);
                 }
             }
         });
+        //Set on click listener to the unfavorite button
+        mUnfavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MovieDetailsActivity.this.getContentResolver().delete(
+                        MovieProvider.FavoriteMovies.withId(movie.getId()),
+                        null,null
+                );
+                mFavoriteButton.setVisibility(View.VISIBLE);
+                mUnfavoriteButton.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public class CheckFavoriteTask extends AsyncTask<String, Void, Cursor> {
+        @Override
+        protected Cursor doInBackground(String... strings) {
+            Cursor result = null;
+            if (strings != null && strings.length>0) {
+                result = MovieDetailsActivity.this.getContentResolver()
+                        .query(MovieProvider.FavoriteMovies.withId(strings[0]),
+                                null,null,null,null);
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            if (cursor != null && cursor.getCount() > 0) {
+                //This movie has been favorited.
+                mFavoriteButton.setVisibility(View.GONE);
+                mUnfavoriteButton.setVisibility(View.VISIBLE);
+            } else {
+                //This movie has been not been favorited.
+                mFavoriteButton.setVisibility(View.VISIBLE);
+                mUnfavoriteButton.setVisibility(View.GONE);
+            }
+        }
     }
 
     public class GetVideoDetailsTask extends AsyncTask<String, Void, String> {

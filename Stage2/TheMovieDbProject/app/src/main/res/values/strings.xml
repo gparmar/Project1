@@ -6,9 +6,13 @@
     <string name="release_date">Release date:</string>
     <string name="user_rating">User rating:</string>
     <string name="mark_as_favorite">Mark as Favorite</string>
+    <string name="mark_as_favorite_portrait">Mark as\nFavorite</string>
+    <string name="mark_as_unfavorite">Unfavorite this movie</string>
+    <string name="mark_as_unfavorite_portrait">Unfavorite\nthis movie</string>
     <string name="plot_synopsis">Plot synopsis:</string>
     <string name="trailers">Trailers:</string>
     <string name="no_trailers">No trailers</string>
     <string name="reviews">Reviews:</string>
     <string name="no_reviews">No reviews</string>
+    <string name="movie_detail">Movie Detail</string>
 </resources>

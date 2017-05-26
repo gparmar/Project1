@@ -3,6 +3,7 @@ package com.example.android.themoviedbproject;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -53,8 +54,15 @@ public class MainActivity extends AppCompatActivity {
         mSortedBy = Integer.parseInt(CommonUtils.getSharedPref(this, Constants.PROPERTY_SORTED_ON, "0"));
 
         mMoviePostersRV = (RecyclerView) findViewById(R.id.rv_movie_posters);
+
         //LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager layoutManager = null;
+        int orientation = getResources().getConfiguration().orientation;
+        if (Configuration.ORIENTATION_PORTRAIT == orientation) {
+            layoutManager = new GridLayoutManager(this, 3);
+        } else {
+            layoutManager = new GridLayoutManager(this, 6);
+        }
         mMoviePostersRV.setLayoutManager(layoutManager);
         mMoviePostersRV.setAdapter(new PostersGridAdapter(this, null));
 
