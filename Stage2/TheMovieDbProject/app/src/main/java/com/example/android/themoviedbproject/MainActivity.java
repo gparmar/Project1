@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mMoviePostersRV;
     public static int mSortedBy = 0;
     private PostersGridAdapter mAdapter;
+    private GridLayoutManager mLayoutManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,27 +59,41 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mMoviePostersRV = (RecyclerView) findViewById(R.id.rv_movie_posters);
 
-        //LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        GridLayoutManager layoutManager = null;
+        //LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+
         int orientation = getResources().getConfiguration().orientation;
         if (Configuration.ORIENTATION_PORTRAIT == orientation) {
-            layoutManager = new GridLayoutManager(this, 3);
+            mLayoutManager = new GridLayoutManager(this, 3);
         } else {
-            layoutManager = new GridLayoutManager(this, 6);
+            mLayoutManager = new GridLayoutManager(this, 6);
         }
-        mMoviePostersRV.setLayoutManager(layoutManager);
+        mMoviePostersRV.setLayoutManager(mLayoutManager);
         mAdapter = new PostersGridAdapter(this, null);
         mMoviePostersRV.setAdapter(mAdapter);
 
-        if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
-            setTitle("Popular Movies");
-            showMoviePosters(Constants.POPULAR_MOVIES_URL);
-        } else if (SORTED_BY_TOP_RATED_MOVIES == mSortedBy) {
-            setTitle("Top Rated Movies");
-            showMoviePosters(Constants.TOPRATED_MOVIES_URL);
-        } else if (SORTED_BY_FAV_MOVIES == mSortedBy) {
-            setTitle("Favorite Movies");
-            showFavoriteMovies();
+        if (savedInstanceState != null) {
+            List<Movie> movies = savedInstanceState.getParcelableArrayList("movies");
+            mAdapter.setMovies(movies);
+            int scrollPosition = savedInstanceState.getInt("scrollPosition");
+            mLayoutManager.scrollToPosition(scrollPosition);
+            if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
+                setTitle("Popular Movies");
+            } else if (SORTED_BY_TOP_RATED_MOVIES == mSortedBy) {
+                setTitle("Top Rated Movies");
+            } else if (SORTED_BY_FAV_MOVIES == mSortedBy) {
+                setTitle("Favorite Movies");
+            }
+        } else {
+            if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
+                setTitle("Popular Movies");
+                showMoviePosters(Constants.POPULAR_MOVIES_URL);
+            } else if (SORTED_BY_TOP_RATED_MOVIES == mSortedBy) {
+                setTitle("Top Rated Movies");
+                showMoviePosters(Constants.TOPRATED_MOVIES_URL);
+            } else if (SORTED_BY_FAV_MOVIES == mSortedBy) {
+                setTitle("Favorite Movies");
+                showFavoriteMovies();
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -128,6 +144,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "Granted permission to write to local folders");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        int scrollPosition = mLayoutManager.findFirstVisibleItemPosition();
+        outState.putInt("scrollPosition", scrollPosition);
+        outState.putParcelableArrayList("movies",
+                (ArrayList<? extends Parcelable>) mAdapter.getMovies());
     }
 
     /**

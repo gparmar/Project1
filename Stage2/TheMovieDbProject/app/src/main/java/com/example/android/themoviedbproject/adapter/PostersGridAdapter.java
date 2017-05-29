@@ -52,6 +52,10 @@ public class PostersGridAdapter extends RecyclerView.Adapter<PostersGridAdapter.
         return 0;
     }
 
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
     public void setMovies(List<Movie> movies) {
         Log.d("PostersGridAdapter","Setting a new movies list.");
         this.movies = movies;
