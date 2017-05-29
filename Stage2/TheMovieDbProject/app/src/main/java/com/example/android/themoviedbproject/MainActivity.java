@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             movies = new ArrayList<>();
             mAdapter.setMovies(movies);
             Toast.makeText(MainActivity.this,
-                    "No movies found. Please check your internet",
+                    R.string.no_movies_msg,
                     Toast.LENGTH_LONG).show();
         }
 

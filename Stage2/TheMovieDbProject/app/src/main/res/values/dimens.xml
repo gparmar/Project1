@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="movie_title_height_portrait">100dp</dimen>
+    <dimen name="movie_title_height_land">80dp</dimen>
+    <dimen name="movie_title_size">32sp</dimen>
+    <dimen name="movie_title_left_margin">20dp</dimen>
+    <dimen name="general_padding_16dp">16dp</dimen>
+    <dimen name="movie_poster_bottom_padding">10dp</dimen>
+    <dimen name="movie_poster_top_padding">10dp</dimen>
+    <dimen name="general_padding_10dp">10dp</dimen>
+    <dimen name="movie_details_vertical_spacing">10dp</dimen>
+    <dimen name="favorite_btn_txt_size">12sp</dimen>
+    <dimen name="txt_size_14">14sp</dimen>
+    <dimen name="review_text_left_margin">15dp</dimen>
+    <dimen name="trailer_name_left_margin">15dp</dimen>
+    <dimen name="trailer_image_height">100dp</dimen>
+    <dimen name="trailer_image_width">150dp</dimen>
+    <dimen name="trailer_image_left_margin">20dp</dimen>
+</resources>

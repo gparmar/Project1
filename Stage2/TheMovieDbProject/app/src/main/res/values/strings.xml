@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TheMovieDbProject</string>
+    <string name="app_name" translatable="false">TheMovieDbProject</string>
     <string name="popular_sort">Sort by Popular</string>
     <string name="toprated_sort">Sort by Top Rated</string>
     <string name="show_favroites">Show favorites</string>
@@ -15,4 +15,6 @@
     <string name="reviews">Reviews:</string>
     <string name="no_reviews">No reviews</string>
     <string name="movie_detail">Movie Detail</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="no_movies_msg">No movies found. Please check your internet</string>
 </resources>

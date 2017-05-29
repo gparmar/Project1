@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/movie_title_height_portrait"
         android:orientation="horizontal"
         android:background="@color/colorPrimary">
         <TextView
@@ -16,17 +16,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:textSize="32sp"
+            android:layout_marginLeft="@dimen/movie_title_left_margin"
+            android:textSize="@dimen/movie_title_size"
             android:textColor="@android:color/white"
-            tools:text="Movie Title"/>
+            tools:text="@string/movie_title"/>
     </LinearLayout>
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/general_padding_16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,14 +44,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp" />
+                    android:paddingBottom="@dimen/movie_poster_bottom_padding"
+                    android:paddingTop="@dimen/movie_poster_top_padding" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="@dimen/general_padding_10dp">
                     <!--Release date-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="@dimen/movie_details_vertical_spacing">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -94,26 +94,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mark_as_favorite_portrait"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/favorite_btn_txt_size"
                         android:textColor="@android:color/white"
                         android:background="@drawable/button_background"
-                        android:layout_marginTop="10dp"
-                        android:padding="10dp"/>
+                        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
+                        android:padding="@dimen/general_padding_10dp"/>
                     <Button android:id="@+id/unfavorite_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mark_as_unfavorite_portrait"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/favorite_btn_txt_size"
                         android:textColor="@android:color/white"
                         android:background="@drawable/button_background"
-                        android:layout_marginTop="10dp"
-                        android:padding="10dp"
+                        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
+                        android:padding="@dimen/general_padding_10dp"
                         android:visibility="gone"/>
                     <!-- Plot Synopsis -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="@dimen/movie_details_vertical_spacing"
                         android:text="@string/plot_synopsis"
                         android:textStyle="bold" />
 
@@ -130,7 +130,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/movie_details_vertical_spacing"
                 android:text="@string/trailers"
                 android:textStyle="bold" />
 
@@ -144,8 +144,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="@dimen/movie_details_vertical_spacing"
+                    android:layout_marginTop="@dimen/movie_details_vertical_spacing"
                     android:text="@string/no_trailers" />
             </LinearLayout>
 
@@ -153,7 +153,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/movie_details_vertical_spacing"
                 android:text="@string/reviews"
                 android:textStyle="bold" />
 
@@ -167,8 +167,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="@dimen/movie_details_vertical_spacing"
+                    android:layout_marginTop="@dimen/movie_details_vertical_spacing"
                     android:text="@string/no_reviews" />
             </LinearLayout>
         </LinearLayout>
