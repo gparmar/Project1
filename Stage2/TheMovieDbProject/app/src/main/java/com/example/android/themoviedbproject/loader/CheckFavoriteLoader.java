@@ -24,7 +24,8 @@ public class CheckFavoriteLoader extends AsyncTaskLoader<Cursor> {
         if (mData != null) {
             // Use cached data
             deliverResult(mData);
-        } else {
+        }
+        if (takeContentChanged() || mData == null) {
             // We have no data, so kick off loading it
             forceLoad();
         }

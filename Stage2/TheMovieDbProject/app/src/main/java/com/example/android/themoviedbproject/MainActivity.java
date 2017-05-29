@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int SORTED_BY_FAV_MOVIES = 2;
     private static final int WRITE_EXTERNAL_STORAGE_REQ_CODE = 10;
 
-    public static final int GET_MOVIES_REQUEST_ID = 1;
+    public static final int GET_MOVIES_REQUEST_ID = 10;
 
     private RecyclerView mMoviePostersRV;
     public static int mSortedBy = 0;
@@ -123,9 +123,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
             }
         }
-
-
-        getSupportLoaderManager().initLoader(GET_MOVIES_REQUEST_ID, null, this);
     }
 
     @Override
