@@ -196,15 +196,32 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Bundle args = new Bundle();
         args.putString("movieId", movie.getId());
+        LoaderManager loaderManager = getSupportLoaderManager();
+
         //Get the movie trailers and display them
-        getSupportLoaderManager().initLoader(GET_VIDEOS_REQUEST_ID, args, mVideosCallbacks);
+        Loader loader = loaderManager.getLoader(GET_VIDEOS_REQUEST_ID);
+        if (loader == null) {
+            getSupportLoaderManager().initLoader(GET_VIDEOS_REQUEST_ID, args, mVideosCallbacks);
+        } else {
+            getSupportLoaderManager().restartLoader(GET_VIDEOS_REQUEST_ID, args, mVideosCallbacks);
+        }
 
         //Get the movie reviews and display them
-        getSupportLoaderManager().initLoader(GET_REVIEWS_REQUEST_ID, args, mReviewsCallbacks);
+        loader = loaderManager.getLoader(GET_REVIEWS_REQUEST_ID);
+        if (loader == null) {
+            getSupportLoaderManager().initLoader(GET_REVIEWS_REQUEST_ID, args, mReviewsCallbacks);
+        } else {
+            getSupportLoaderManager().restartLoader(GET_REVIEWS_REQUEST_ID, args, mReviewsCallbacks);
+        }
 
         //Check if the movie is favorited. If so then hide the favorite button
         //and unhide the unfavorite button and vice versa if otherwise.
-        getSupportLoaderManager().initLoader(GET_FAVORITES_REQUEST_ID, args, mFavoritesCallbacks);
+        loader = loaderManager.getLoader(GET_FAVORITES_REQUEST_ID);
+        if (loader == null) {
+            getSupportLoaderManager().initLoader(GET_FAVORITES_REQUEST_ID, args, mFavoritesCallbacks);
+        } else {
+            getSupportLoaderManager().restartLoader(GET_FAVORITES_REQUEST_ID, args, mFavoritesCallbacks);
+        }
 
 
 
