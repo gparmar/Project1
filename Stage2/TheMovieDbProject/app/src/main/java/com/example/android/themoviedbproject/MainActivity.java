@@ -6,12 +6,13 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,27 +25,28 @@ import android.widget.Toast;
 import com.example.android.themoviedbproject.adapter.PostersGridAdapter;
 import com.example.android.themoviedbproject.common.CommonUtils;
 import com.example.android.themoviedbproject.common.Constants;
-import com.example.android.themoviedbproject.common.MovieUtil;
 import com.example.android.themoviedbproject.data.FavoriteMovie;
 import com.example.android.themoviedbproject.data.MovieProvider;
+import com.example.android.themoviedbproject.loader.GetMoviesLoader;
 import com.example.android.themoviedbproject.model.Movie;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>> {
     private static final String TAG = "MainActivity";
     private static final int SORTED_BY_POPULAR_MOVIES = 0;
     private static final int SORTED_BY_TOP_RATED_MOVIES = 1;
     private static final int SORTED_BY_FAV_MOVIES = 2;
     private static final int WRITE_EXTERNAL_STORAGE_REQ_CODE = 10;
+
+    public static final int GET_MOVIES_REQUEST_ID = 1;
+
     private RecyclerView mMoviePostersRV;
     public static int mSortedBy = 0;
+    private PostersGridAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
             layoutManager = new GridLayoutManager(this, 6);
         }
         mMoviePostersRV.setLayoutManager(layoutManager);
-        mMoviePostersRV.setAdapter(new PostersGridAdapter(this, null));
+        mAdapter = new PostersGridAdapter(this, null);
+        mMoviePostersRV.setAdapter(mAdapter);
 
         if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
             setTitle("Popular Movies");
@@ -120,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+
+        getSupportLoaderManager().initLoader(GET_MOVIES_REQUEST_ID, null, this);
     }
 
     @Override
@@ -139,11 +145,17 @@ public class MainActivity extends AppCompatActivity {
                 .buildUpon().appendQueryParameter("api_key", BuildConfig.THEMOVIEDB_API_KEY)
                 .build();
         Log.d(TAG, "Will make http request " + uri.toString());
-        try {
-            new GetMovies().execute(new URL(uri.toString()));
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Error while getting popular movies", e);
+
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString("uri", uri.toString());
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Loader<List<Movie>> loader = loaderManager.getLoader(GET_MOVIES_REQUEST_ID);
+        if (loader == null) {
+            loaderManager.initLoader(GET_MOVIES_REQUEST_ID, queryBundle, this);
+        } else {
+            loaderManager.restartLoader(GET_MOVIES_REQUEST_ID, queryBundle, this);
         }
+
 
         if (SORTED_BY_POPULAR_MOVIES == mSortedBy) {
             setTitle("Popular Movies");
@@ -183,39 +195,40 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Favorite Movies");
     }
 
-    public class GetMovies extends AsyncTask<URL, Void, List<Movie>> {
-
-        @Override
-        protected List<Movie> doInBackground(URL... urls) {
-            if (urls != null && urls.length > 0) {
-                try {
-                    //I am using apache commons IOUtils utility to convert
-                    //a url directly to text.
-                    String json = IOUtils.toString(urls[0]);
-                    Log.d(TAG, "Json from TMD:" + json);
-                    return MovieUtil.getMovieListFromJson(json);
-                } catch (IOException e) {
-                    Log.e(TAG, "Error while getting scanner", e);
-                }
-            }
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        if (args == null) {
             return null;
         }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-            if (movies != null) {
-                Log.d(TAG, "Got movie list:" + movies);
-                PostersGridAdapter adapter = (PostersGridAdapter) mMoviePostersRV.getAdapter();
-                adapter.setMovies(movies);
-            } else {
-                movies = new ArrayList<>();
-                PostersGridAdapter adapter = (PostersGridAdapter) mMoviePostersRV.getAdapter();
-                adapter.setMovies(movies);
-                Toast.makeText(MainActivity.this,
-                        "No movies found. Please check your internet",
-                        Toast.LENGTH_LONG).show();
-            }
+        String uri = args.getString("uri", "");
+        try {
+            URL url = new URL(uri);
+            return new GetMoviesLoader(this, url);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "error while creating url from uri:" + uri);
         }
+        return null;
+    }
+
+
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
+        if (movies != null) {
+            Log.d(TAG, "Got movie list:" + movies);
+            mAdapter.setMovies(movies);
+        } else {
+            movies = new ArrayList<>();
+            mAdapter.setMovies(movies);
+            Toast.makeText(MainActivity.this,
+                    "No movies found. Please check your internet",
+                    Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Movie>> loader) {
+        mAdapter.setMovies(null);
     }
 
     @Override

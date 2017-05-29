@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,10 @@ import com.example.android.themoviedbproject.common.Constants;
 import com.example.android.themoviedbproject.common.MovieUtil;
 import com.example.android.themoviedbproject.data.FavoriteMovie;
 import com.example.android.themoviedbproject.data.MovieProvider;
+import com.example.android.themoviedbproject.loader.CheckFavoriteLoader;
+import com.example.android.themoviedbproject.loader.GetMoviesLoader;
+import com.example.android.themoviedbproject.loader.GetReviewsLoader;
+import com.example.android.themoviedbproject.loader.GetVideoDetailsLoader;
 import com.example.android.themoviedbproject.model.Movie;
 import com.example.android.themoviedbproject.model.Review;
 import com.example.android.themoviedbproject.model.Video;
@@ -30,11 +36,17 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 public class MovieDetailsActivity extends AppCompatActivity {
     private static String TAG = "MovieDetailsActivity";
+
+    public static final int GET_VIDEOS_REQUEST_ID = 1;
+    public static final int GET_REVIEWS_REQUEST_ID = 2;
+    public static final int GET_FAVORITES_REQUEST_ID = 3;
+
     private TextView mTitleTV;
     private TextView mReleaseDateTV;
     private TextView mUserRatingTV;
@@ -45,6 +57,117 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private Button mFavoriteButton;
     private Button mUnfavoriteButton;
 
+    LoaderManager.LoaderCallbacks<List<Video>> mVideosCallbacks =
+            new LoaderManager.LoaderCallbacks<List<Video>>() {
+                @Override
+                public Loader<List<Video>> onCreateLoader(int id, Bundle args) {
+                    if (args == null) {
+                        return null;
+                    }
+                    String movieId = args.getString("movieId", "");
+                    return new GetVideoDetailsLoader(MovieDetailsActivity.this, movieId);
+                }
+
+                @Override
+                public void onLoadFinished(Loader<List<Video>> loader, List<Video> videos) {
+                    if (videos != null && videos.size() > 0) {
+                        LayoutInflater inflater = LayoutInflater.from(MovieDetailsActivity.this);
+                        mTrailersContainer.removeAllViews();
+                        for (final Video video: videos) {
+                            View view = inflater.inflate(R.layout.trailers_item, mTrailersContainer, false);
+                            ImageView iv = (ImageView) view.findViewById(R.id.trailer_thumbnail);
+                            Picasso.with(MovieDetailsActivity.this).load(Constants.YOUTUBE_THUMBNAIL_URL.replace("###",video.getKey()))
+                                    .into(iv);
+                            TextView name = (TextView) view.findViewById(R.id.trailer_name);
+                            name.setText(video.getName());
+
+                            //Add the onClickListener on the view
+                            view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
+                                    Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                                            Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
+                                    try {
+                                        startActivity(appIntent);
+                                    } catch (ActivityNotFoundException ex) {
+                                        startActivity(webIntent);
+                                    }
+                                }
+                            });
+
+                            mTrailersContainer.addView(view);
+                        }
+                    }
+                }
+
+                @Override
+                public void onLoaderReset(Loader<List<Video>> loader) {
+
+                }
+            };
+    LoaderManager.LoaderCallbacks<List<Review>> mReviewsCallbacks =
+            new LoaderManager.LoaderCallbacks<List<Review>>() {
+                @Override
+                public Loader<List<Review>> onCreateLoader(int id, Bundle args) {
+                    if (args == null) {
+                        return null;
+                    }
+                    String movieId = args.getString("movieId", "");
+                    return new GetReviewsLoader(MovieDetailsActivity.this, movieId);
+                }
+
+                @Override
+                public void onLoadFinished(Loader<List<Review>> loader, List<Review> reviews) {
+                    if (reviews != null && reviews.size() > 0) {
+                        LayoutInflater inflater = LayoutInflater.from(MovieDetailsActivity.this);
+                        mReviewsContainer.removeAllViews();
+                        for (Review review: reviews) {
+                            View view = inflater.inflate(R.layout.reviews_item, mReviewsContainer, false);
+
+                            TextView reviewTV = (TextView) view.findViewById(R.id.review);
+                            TextView author = (TextView) view.findViewById(R.id.author);
+                            reviewTV.setText(review.getContent());
+                            author.setText(" - "+review.getAuthor());
+                            mReviewsContainer.addView(view);
+                        }
+                    }
+                }
+
+                @Override
+                public void onLoaderReset(Loader<List<Review>> loader) {
+
+                }
+            };
+    LoaderManager.LoaderCallbacks<Cursor> mFavoritesCallbacks =
+            new LoaderManager.LoaderCallbacks<Cursor>() {
+                @Override
+                public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                    if (args == null) {
+                        return null;
+                    }
+                    String movieId = args.getString("movieId", "");
+                    return new CheckFavoriteLoader(MovieDetailsActivity.this, movieId);
+                }
+
+                @Override
+                public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+                    if (cursor != null && cursor.getCount() > 0) {
+                        //This movie has been favorited.
+                        mFavoriteButton.setVisibility(View.GONE);
+                        mUnfavoriteButton.setVisibility(View.VISIBLE);
+                    } else {
+                        //This movie has been not been favorited.
+                        mFavoriteButton.setVisibility(View.VISIBLE);
+                        mUnfavoriteButton.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onLoaderReset(Loader<Cursor> loader) {
+
+                }
+            };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,13 +194,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
         //Set the title of the movie
         mTitleTV.setText(movie.getTitle());
 
+        Bundle args = new Bundle();
+        args.putString("movieId", movie.getId());
         //Get the movie trailers and display them
-        new GetVideoDetailsTask().execute(movie.getId());
+        getSupportLoaderManager().initLoader(GET_VIDEOS_REQUEST_ID, args, mVideosCallbacks);
+
         //Get the movie reviews and display them
-        new GetReviewDetailsTask().execute(movie.getId());
+        getSupportLoaderManager().initLoader(GET_REVIEWS_REQUEST_ID, args, mReviewsCallbacks);
+
         //Check if the movie is favorited. If so then hide the favorite button
         //and unhide the unfavorite button and vice versa if otherwise.
-        new CheckFavoriteTask().execute(movie.getId());
+        getSupportLoaderManager().initLoader(GET_FAVORITES_REQUEST_ID, args, mFavoritesCallbacks);
+
 
 
         //Set on click listener to the favorite button
@@ -119,116 +247,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
     }
 
-    public class CheckFavoriteTask extends AsyncTask<String, Void, Cursor> {
-        @Override
-        protected Cursor doInBackground(String... strings) {
-            Cursor result = null;
-            if (strings != null && strings.length>0) {
-                result = MovieDetailsActivity.this.getContentResolver()
-                        .query(MovieProvider.FavoriteMovies.withId(strings[0]),
-                                null,null,null,null);
-            }
-            return result;
-        }
 
-        @Override
-        protected void onPostExecute(Cursor cursor) {
-            if (cursor != null && cursor.getCount() > 0) {
-                //This movie has been favorited.
-                mFavoriteButton.setVisibility(View.GONE);
-                mUnfavoriteButton.setVisibility(View.VISIBLE);
-            } else {
-                //This movie has been not been favorited.
-                mFavoriteButton.setVisibility(View.VISIBLE);
-                mUnfavoriteButton.setVisibility(View.GONE);
-            }
-        }
-    }
 
-    public class GetVideoDetailsTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String videosUrlString = Constants.MOVIE_VIDEOS_URL;
-            videosUrlString = videosUrlString.replace("###", strings[0]) +
-                    "?api_key="+ BuildConfig.THEMOVIEDB_API_KEY;
-            try {
-                InputStream in = new URL(videosUrlString).openStream();
-                String json = IOUtils.toString(in);
-                return json;
-            } catch (IOException e) {
-                Log.e(TAG, "Error while getting the videos json.", e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String json) {
-            List<Video> videos = MovieUtil.getMovieVideoListFromJson(json);
-            if (videos != null && videos.size() > 0) {
-                LayoutInflater inflater = LayoutInflater.from(MovieDetailsActivity.this);
-                mTrailersContainer.removeAllViews();
-                for (final Video video: videos) {
-                    View view = inflater.inflate(R.layout.trailers_item, mTrailersContainer, false);
-                    ImageView iv = (ImageView) view.findViewById(R.id.trailer_thumbnail);
-                    Picasso.with(MovieDetailsActivity.this).load(Constants.YOUTUBE_THUMBNAIL_URL.replace("###",video.getKey()))
-                            .into(iv);
-                    TextView name = (TextView) view.findViewById(R.id.trailer_name);
-                    name.setText(video.getName());
-
-                    //Add the onClickListener on the view
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
-                            Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
-                            try {
-                                startActivity(appIntent);
-                            } catch (ActivityNotFoundException ex) {
-                                startActivity(webIntent);
-                            }
-                        }
-                    });
-
-                    mTrailersContainer.addView(view);
-                }
-            }
-
-        }
-    }
-    public class GetReviewDetailsTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String reviewsUrlString = Constants.MOVIE_REVIEWS_URL;
-            reviewsUrlString = reviewsUrlString.replace("###", strings[0]) +
-                    "?api_key="+ BuildConfig.THEMOVIEDB_API_KEY;
-            try {
-                String json = IOUtils.toString(new URL(reviewsUrlString));
-                return json;
-            } catch (IOException e) {
-                Log.e(TAG, "Error while getting the reviews json.", e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String json) {
-            List<Review> reviews = MovieUtil.getMovieReviewListFromJson(json);
-            if (reviews != null && reviews.size() > 0) {
-                LayoutInflater inflater = LayoutInflater.from(MovieDetailsActivity.this);
-                mReviewsContainer.removeAllViews();
-                for (Review review: reviews) {
-                    View view = inflater.inflate(R.layout.reviews_item, mReviewsContainer, false);
-
-                    TextView reviewTV = (TextView) view.findViewById(R.id.review);
-                    TextView author = (TextView) view.findViewById(R.id.author);
-                    reviewTV.setText(review.getContent());
-                    author.setText(" - "+review.getAuthor());
-                    mReviewsContainer.addView(view);
-                }
-            }
-        }
-    }
 }
